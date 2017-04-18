@@ -1,0 +1,13 @@
+{% extends "_/html.html" %}
+
+{% block body %}
+
+{% for fragment in fragments %}
+<div>
+    {{fragment.content}}
+</div>
+<hr>
+{% endfor %}
+
+
+{% endblock %}
