@@ -7,7 +7,33 @@ Textnet server prototype in Python.
     easy_install flask
 
 
-## Feature set
+## Implemented feature set
+
+* rudimentary filesystem:
+    * address fragments by `~tags` (file names treated as tags)
+    * find collections of fragments with same set of tags
+    * `~publish` folders to ~namespace/path
+* rudimentary publisher base:
+    * lookup for published document
+
+## Feature set to implement
+
+* rudimentary composer
+    * `~include`
+    * `~attach`
+* rudimentary publisher to HTML
+    * render texts
+    * render image collections and serve images
+    * render attaches and serve attaches
+* rudimentary shared spaces
+    * `~import`
+    * `~library`
+* offline/P2P hygiene  
+    * fully shared spaces
+    * cache
+    * version control
+    * merge and conflict resolution
+
 
 
 ## Composer markup
