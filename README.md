@@ -5,7 +5,11 @@ Textnet server prototype in Python.
 ## Technology stack: flask
 
     easy_install flask
+    pip install pymmd
 
+## Run locally
+
+    python app.py
 
 ## Implemented feature set
 
@@ -13,8 +17,9 @@ Textnet server prototype in Python.
     * address fragments by `~tags` (file names treated as tags)
     * find collections of fragments with same set of tags
     * `~publish` folders to ~namespace/path
-* rudimentary publisher base:
+* rudimentary publisher:
     * lookup for published document
+    * render text from multimarkdown
 
 ## Feature set to implement
 
@@ -22,7 +27,6 @@ Textnet server prototype in Python.
     * `~include`
     * `~attach`
 * rudimentary publisher to HTML
-    * render texts
     * render image collections and serve images
     * render attaches and serve attaches
 * rudimentary shared spaces
@@ -35,8 +39,7 @@ Textnet server prototype in Python.
     * merge and conflict resolution
 
 
-
-## Composer markup
+## Textnet markup
 
     ~tags: #tag1, #tag2, #tag3
     ~include: #tag #intersected with other tag

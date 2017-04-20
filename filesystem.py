@@ -26,7 +26,7 @@ def simplify_name(name):
     return re.sub(r'\W+', ' ',name, flags=re.UNICODE).lower().strip()
 
 # These encoders convert everything to textnet-compatible raw format
-def encoder_txt(abs_path):
+def encoder_txt(abs_path, ext):
     with open(abs_path, 'r') as f:
         content = f.read().decode('UTF-8')
     lines = content.split("\n") + ["----------"]
@@ -38,18 +38,19 @@ def encoder_txt(abs_path):
             fragment = []
         else:
             fragment += [l]
-    fragments = [x for x in fragments if not re.match(r'^\s*$', x)]
+    fragments = ["\n".join(['~ext: %s' % ext,x]) for x in fragments if not re.match(r'^\s*$', x)]
     return fragments
 
-def encoder_attach(abs_path):
+def encoder_attach(abs_path, ext):
     with open(abs_path, 'rb') as f:
         content = f.read()
     return ["\n".join([
-        '~decode: attach',
+        '~ext: %s' % ext,
+        '~decode: base64',
         base64.urlsafe_b64encode(content)
     ])]
 
-def encoder_skip(abs_path):
+def encoder_skip(abs_path, ext):
     return []
 
 registered_encoders = dict(
@@ -68,10 +69,11 @@ def get_raw_fragments(abs_path):
     encoders_fallback = "."+config.filesystem.encoders_fallback
     # find encoder
     path, ext = os.path.splitext(abs_path)
+    original_ext = ext
     if ext == "": ext = encoders_default
     if ext not in encoders: ext = encoders_fallback
     encoder = registered_encoders[ encoders[ext]["id"] ]
-    return encoder(abs_path)
+    return encoder(abs_path, original_ext[1:])
 
 def get_command(line):
     if len(line) == 0 or line[0] != COMMAND:
@@ -81,7 +83,7 @@ def get_command(line):
         if len(parts) == 1:
             return dict(command=simplify_name(parts[0]))
         else:
-            return dict(command=simplify_name(parts[0]), content=":".join(parts[1:]))
+            return dict(command=simplify_name(parts[0]), content=(":".join(parts[1:])).strip())
 
 def get_tags(tags_commands):
     tags = []
@@ -89,17 +91,30 @@ def get_tags(tags_commands):
         tags += [x for x in [simplify_name(t) for t in command["content"].split('#')] if len(x) > 0]
     return tags
 
+def hash_commands(commands):
+    hash = dict()
+    for command in commands:
+        hash[command["command"]] = command
+    return hash
+
 def get_fragment_structure(fragment_content):
-    fragment = dict(content=fragment_content, uuid=uuid.uuid4())
+    fragment = dict(raw=fragment_content, uuid=uuid.uuid4())
     # find commands
     fragment["commands"] = []
+    fragment["content"] = []
     lines = fragment_content.split("\n")
     for line in lines:
         command = get_command(line)
-        if command: fragment["commands"] = fragment["commands"]+[command]
+        if command:
+            fragment["commands"] = fragment["commands"]+[command]
+        else:
+            fragment["content"] += [line]
     # extract tags
+    fragment["commands_hash"] = hash_commands(fragment["commands"])
     fragment["tags"] = get_tags([command for command in fragment["commands"] if command["command"] == "tags"])
+    fragment["content"] = u"\n".join(fragment["content"])
     return fragment
+
 
 
 def build_sources(abs_paths):

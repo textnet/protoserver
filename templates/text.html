@@ -2,12 +2,54 @@
 
 {% block body %}
 
-{% for fragment in fragments %}
-<div>
-    {{fragment.content}}
+<style media="screen">
+.content {
+    max-width: 660px;
+    margin: 0 auto;
+}
+.content, pre, code {
+    font-family: Menlo;
+    line-height: 1.3rem;
+}
+h2, p, td, li {
+    font-size: 1rem;
+    padding:0;
+    margin:0;
+    color: #666666;
+}
+p { margin: 1.3rem 0 }
+p, td {
+    font-weight: 100;
+}
+h1 {
+    font-size: 1.3rem;
+    color: #000000;
+    padding: 0;
+    margin:  1.3rem 0;
+}
+h2 {
+    margin: 1.3rem 0 0;
+    color: #000000;
+}
+h3, h4, h5, h6 {
+    padding:0;
+    margin: 1.3rem 0 0;
+    font-weight: bold;
+    font-size: .75rem;
+    letter-spacing: 0.152rem;
+    text-transform: uppercase;
+    color: #000000;
+}
+</style>
+
+
+<div class="content">
+    {% for fragment in fragments %}
+        <div id="fragment-{{fragment.uuid}}">
+            {{fragment.html|safe}}
+        </div>
+    {% endfor %}
 </div>
-<hr>
-{% endfor %}
 
 
 {% endblock %}
