@@ -1,47 +1,112 @@
 {% extends "_/html.html" %}
 
-{% block body %}
+{% block head_extra %}
+<style media="screen">
+    .grids { display: none }
+    #grid-v              { position: fixed; top:0; left:0; bottom:0; right:0; z-index: 9999 }
+    #grid-v .grid-column { float:left; height:100%; border-right: 1px dotted rgba(255,0,0,0.5); margin-right: -1px }
+    #grid-h           { position: fixed; padding-top: 20px; top:0; left:0; bottom:0; right:0; z-index: 9999 }
+    #grid-h .grid-row { width:100%; border-top: 1px dotted rgba(255,0,0,0.5); margin-top: -1px }
+</style>
+<script type="text/javascript">
+    var grid_v = [], grid_h = [];
+    // vertical grid
+    text_count   = 80;
+    padding_count = 5;
+    column_count = text_count+padding_count*2;
+    column_width = (100.0/column_count)+"%";
+    pad_width = (padding_count*100.0/column_count)+"%";
+    text_width = ((column_count-2*padding_count)*100.0/column_count)+"%";
+    for (var i=0; i<column_count; i++) {
+        grid_v[grid_v.length] = "<div style='width:"+column_width+"' class='grid-column'></div>";
+    }
+    // horisontal grid
+    row_height = "20px";
+    for (var i=0; i<100; i++) {
+        grid_h[grid_h.length] = "<div style='height:"+row_height+"' class='grid-row'></div>";
+    }
+    // mapping
+    $(function(){
+        $('#grid-v').html(grid_v.join("")).click(function(){$('.grids').hide()})
+        $('#grid-h').html(grid_h.join("")).click(function(){$('.grids').hide()})
+        $('.content').css({
+            "width" : text_width,
+            "margin-left": pad_width
+        })
+    })
+</script>
 
+{% endblock %}
+
+
+{% block body %}
+<div id="grid-v" class="grids"></div>
+<div id="grid-h" class="grids"></div>
 <style media="screen">
 .content {
-    max-width: 660px;
-    margin: 0 auto;
+    margin-top: 20px;
 }
 .content, pre, code {
-    font-family: Menlo;
-    line-height: 1.3rem;
-}
-h2, p, td, li {
+    font-family: Ubuntu Mono;
+    /* 5-80-5 */
     font-size: 1rem;
+    letter-spacing: -0.03px;
+    line-height: 1.25em;
+}
+p, td, li {
     padding:0;
     margin:0;
-    color: #666666;
-}
-p { margin: 1.3rem 0 }
-p, td {
-    font-weight: 100;
 }
 h1 {
-    font-size: 1.3rem;
-    color: #000000;
+    font-size: 2rem;
+    line-height: 2.5rem;
     padding: 0;
-    margin:  1.3rem 0;
+    margin: 1.25rem 0 1.25rem;
 }
 h2 {
-    margin: 1.3rem 0 0;
-    color: #000000;
+    margin: 1.25rem 0 0rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
 }
 h3, h4, h5, h6 {
     padding:0;
-    margin: 1.3rem 0 0;
+    margin: 0rem 0 0rem;
     font-weight: bold;
-    font-size: .75rem;
-    letter-spacing: 0.152rem;
+    font-size: 1rem;
     text-transform: uppercase;
-    color: #000000;
+}
+p { margin: 0 0 1.25rem 0 }
+
+
+body {
+    background: #002b36;
+    color:      #839496;
+}
+h1  { color: #fdf6e3 }
+h2 { color: #eee8d5}
+h3, h4, h5, h6 { color: #eee8d5 }
+b, i, strong, em { color: #eee8d5 }
+code { color: #fdf6e3; background: #657b83; padding: 1px 3px; margin: -1px -3px }
+.colorise h1, .colorise h2, .colorise h3, .colorise h4, .colorise h5, .colorise h6, .colorise p {
+    background: #657b83
 }
 </style>
-
+<!-- $base03:    #002b36;
+$base02:    #073642;
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900; -->
 
 <div class="content">
     {% for fragment in fragments %}
