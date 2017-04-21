@@ -20,6 +20,9 @@ Textnet server prototype in Python.
 * rudimentary publisher:
     * lookup for published document
     * render text from multimarkdown
+* visuals
+    * adapt one of the dark themes (Solarised)
+    * use one of the monospaced fonts (Ubuntu)
 
 ## Feature set to implement
 
@@ -37,7 +40,12 @@ Textnet server prototype in Python.
     * cache
     * version control
     * merge and conflict resolution
-
+    * bring font with it
+* visuals
+    * dynamically scaling grid
+    * proper lists and tables
+    * links
+    * strong/emphasise/headers
 
 ## Textnet markup
 
