@@ -10,7 +10,7 @@ function map(a, f, undef) {
 function mapfilter(a, key, value, f) { return map(a, function(x) { if (x[key] == value) return f(x)}) }
 function filter(a, key, value) { return map(a, function(x) { if (x[key] == value) return x }) }
 function zip(a) { var aa = []; for (var i in a) aa = aa.concat(a[i]); return aa; }
-function unique(a) { var aa = []; for (var i in a) if (aa.indexOf(a[i]) < 0) aa.push(a[i]) return aa; }
+function unique(a) { var aa = []; for (var i in a) if (aa.indexOf(a[i]) < 0) aa.push(a[i]); return aa; }
 function render_text(text, undef) {
     if (!text) text="";
     return text
