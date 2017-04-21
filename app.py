@@ -4,6 +4,7 @@ import sys;
 
 from flask import Flask
 from flask import render_template
+from flask import send_from_directory
 
 import config
 import filesystem
@@ -13,6 +14,9 @@ import render
 
 app = Flask(__name__)
 
+@app.route('/assets/<path:path>')
+def assets(path):
+    return send_from_directory('assets', path)
 
 @app.route("/")
 def hello():
